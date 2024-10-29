@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title>Create New Active Course</title>
+</head>
+<body>
+    <h2>Create New Active Course</h2>
+    <form method="POST">
+        <label for="course_id">Course ID:</label>
+        <input type="text" id="course_id" name="course_id" required><br>
+
+        <label for="course_name">Course Name:</label>
+        <input type="text" id="course_name" name="course_name" required><br>
+
+        <label for="e_textbook_id">E-textbook ID:</label>
+        <input type="text" id="e_textbook_id" name="e_textbook_id" required><br>
+
+        <label for="faculty_id">Faculty Member ID:</label>
+        <input type="text" id="faculty_id" name="faculty_id" required><br>
+
+        <label for="start_date">Course Start Date:</label>
+        <input type="date" id="start_date" name="start_date"><br>
+
+        <label for="end_date">Course End Date:</label>
+        <input type="date" id="end_date" name="end_date"><br>
+
+        <label for="token">Unique Token:</label>
+        <input type="text" id="token" name="token"><br>
+
+        <label for="capacity">Course Capacity:</label>
+        <input type="number" id="capacity" name="capacity"><br>
+
+        <button type="submit" name="action" value="save">Save</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

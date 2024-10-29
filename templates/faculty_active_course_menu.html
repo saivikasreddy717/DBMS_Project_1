@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty - Active Course Menu</title>
+</head>
+<body>
+    <h2>Faculty: Active Course Menu for Course ID: {{ course_id }}</h2>
+    <ul>
+        <li><a href="{{ url_for('view_worklist') }}">1. View Worklist</a></li>
+        <li><a href="{{ url_for('approve_enrollment') }}">2. Approve Enrollment</a></li>
+        <li><a href="{{ url_for('view_students') }}">3. View Students</a></li>
+        <li><a href="{{ url_for('add_new_chapter') }}">4. Add New Chapter</a></li>
+        <li><a href="{{ url_for('modify_chapters') }}">5. Modify Chapters</a></li>
+        <li><a href="{{ url_for('add_ta') }}">6. Add TA</a></li>
+        <li><a href="{{ url_for('faculty_home') }}">7. Go Back</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Block</title>
+</head>
+<body>
+    <h2>View Block</h2>
+
+    {% if block_type == 'content' %}
+        <p>{{ block[1] }}</p>
+        <form method="POST">
+            <button type="submit" name="action" value="next_submit">Next</button>
+        </form>
+    {% elif block_type == 'activity' %}
+        <p>Question: {{ block[1] }}</p>
+        <p>Please select the correct answer:</p>
+        
+        <input type="radio" id="option1" name="selected_answer" value="1">
+        <label for="option1">Option 1</label><br>
+
+        <input type="radio" id="option2" name="selected_answer" value="2">
+        <label for="option2">Option 2</label><br>
+
+        <input type="radio" id="option3" name="selected_answer" value="3">
+        <label for="option3">Option 3</label><br>
+
+        <input type="radio" id="option4" name="selected_answer" value="4">
+        <label for="option4">Option 4</label><br><br>
+
+        <button type="submit" name="action" value="next_submit">Submit</button>
+    {% endif %}
+
+    <form method="POST" style="margin-top: 20px;">
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

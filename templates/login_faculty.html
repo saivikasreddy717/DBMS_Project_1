@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty Login</title>
+</head>
+<body>
+    <h2>Faculty Login</h2>
+    <form method="POST" action="{{ url_for('login_faculty') }}">
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" name="user_id" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <button type="submit" name="action" value="sign_in">Sign-In</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

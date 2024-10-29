@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: View Courses</title>
+</head>
+<body>
+    <h2>Assigned Courses</h2>
+    {% if courses %}
+        <ul>
+            {% for course in courses %}
+                <li>{{ course[0] }} - {{ course[1] }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No courses assigned.</p>
+    {% endif %}
+    <form method="POST">
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

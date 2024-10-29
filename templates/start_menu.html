@@ -1,0 +1,16 @@
+<!-- templates/start_menu.html -->
+<html>
+<head>
+    <title>Start Page</title>
+</head>
+<body>
+    <h2>Choose your Login</h2>
+    <ul>
+        <li><a href="{{ url_for('login', user_type='admin') }}">Admin Login</a></li>
+        <li><a href="{{ url_for('login', user_type='faculty') }}">Faculty Login</a></li>
+        <li><a href="{{ url_for('login', user_type='ta') }}">TA Login</a></li>
+        <li><a href="{{ url_for('login', user_type='student') }}">Student Login</a></li>
+        <li><a href="{{ url_for('exit_app') }}">Exit</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: Add Activity</title>
+</head>
+<body>
+    <h2>Add Activity</h2>
+
+    <form method="POST">
+        <label for="activity_id">Activity ID:</label><br>
+        <input type="text" id="activity_id" name="activity_id" value="{{ activity_id }}" readonly><br><br>
+
+        <button type="submit" name="action" value="add_question">Add Question</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

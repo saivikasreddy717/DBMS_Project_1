@@ -1,0 +1,17 @@
+<!-- templates/admin_home.html -->
+<html>
+<head>
+    <title>Admin Home Page</title>
+</head>
+<body>
+    <h2>Admin Menu</h2>
+    <ul>
+        <li><a href="{{ url_for('create_faculty') }}">1. Create a Faculty Account</a></li>
+        <li><a href="{{ url_for('create_textbook') }}">2. Create E-textbook</a></li>
+        <li><a href="{{ url_for('modify_textbook') }}">3. Modify E-textbooks</a></li>
+        <li><a href="{{ url_for('create_course') }}">4. Create New Active Course</a></li>
+        <li><a href="{{ url_for('create_eval_course') }}">5. Create New Evaluation Course</a></li>
+        <li><a href="{{ url_for('logout') }}">6. Logout</a></li>
+    </ul>
+</body>
+</html>

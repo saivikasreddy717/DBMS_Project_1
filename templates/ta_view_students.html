@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: View Students</title>
+</head>
+<body>
+    <h2>List of Enrolled Students</h2>
+    
+    {% if students %}
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[2] }}</td>
+                <td>{{ student[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No students are enrolled in this course.</p>
+    {% endif %}
+
+    <form method="POST">
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

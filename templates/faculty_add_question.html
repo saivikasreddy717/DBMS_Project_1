@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Question</title>
+</head>
+<body>
+    <h2>Add Question</h2>
+    <form method="post">
+        <label for="question_id">Question ID:</label>
+        <input type="text" id="question_id" name="question_id" required><br><br>
+
+        <label for="question_text">Question Text:</label>
+        <textarea id="question_text" name="question_text" required></textarea><br><br>
+
+        <label>Option 1:</label>
+        <input type="text" name="option_1" required><br>
+        <label>Explanation:</label>
+        <input type="text" name="explanation_1"><br><br>
+
+        <label>Option 2:</label>
+        <input type="text" name="option_2" required><br>
+        <label>Explanation:</label>
+        <input type="text" name="explanation_2"><br><br>
+
+        <label>Option 3:</label>
+        <input type="text" name="option_3"><br>
+        <label>Explanation:</label>
+        <input type="text" name="explanation_3"><br><br>
+
+        <label>Option 4:</label>
+        <input type="text" name="option_4"><br>
+        <label>Explanation:</label>
+        <input type="text" name="explanation_4"><br><br>
+
+        <label for="answer">Correct Answer:</label>
+        <input type="text" id="answer" name="answer" required><br><br>
+
+        <button type="submit" name="action" value="save">Save</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+    </form>
+</body>
+</html>

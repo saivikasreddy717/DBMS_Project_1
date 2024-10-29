@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: Add Question</title>
+</head>
+<body>
+    <h2>Add Question for Activity ID: {{ activity_id }}</h2>
+
+    <form method="POST">
+        <label for="question_id">Question ID:</label>
+        <input type="text" id="question_id" name="question_id" required><br><br>
+
+        <label for="question_text">Question Text:</label>
+        <textarea id="question_text" name="question_text" required></textarea><br><br>
+
+        <label for="option_1">Option 1:</label>
+        <input type="text" id="option_1" name="option_1" required><br>
+        <label for="option_1_explanation">Option 1 Explanation:</label>
+        <textarea id="option_1_explanation" name="option_1_explanation"></textarea><br><br>
+
+        <label for="option_2">Option 2:</label>
+        <input type="text" id="option_2" name="option_2" required><br>
+        <label for="option_2_explanation">Option 2 Explanation:</label>
+        <textarea id="option_2_explanation" name="option_2_explanation"></textarea><br><br>
+
+        <label for="option_3">Option 3:</label>
+        <input type="text" id="option_3" name="option_3" required><br>
+        <label for="option_3_explanation">Option 3 Explanation:</label>
+        <textarea id="option_3_explanation" name="option_3_explanation"></textarea><br><br>
+
+        <label for="option_4">Option 4:</label>
+        <input type="text" id="option_4" name="option_4" required><br>
+        <label for="option_4_explanation">Option 4 Explanation:</label>
+        <textarea id="option_4_explanation" name="option_4_explanation"></textarea><br><br>
+
+        <label for="answer">Correct Answer:</label>
+        <select id="answer" name="answer" required>
+            <option value="option_1">Option 1</option>
+            <option value="option_2">Option 2</option>
+            <option value="option_3">Option 3</option>
+            <option value="option_4">Option 4</option>
+        </select><br><br>
+
+        <button type="submit" name="action" value="save">Save</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+    </form>
+</body>
+</html>

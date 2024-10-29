@@ -1,0 +1,50 @@
+<!-- templates/add_question.html -->
+<html>
+<head>
+    <title>Add Question</title>
+</head>
+<body>
+    <h2>Add Question</h2>
+    <form method="POST">
+        <label for="question_id">Question ID:</label>
+        <input type="text" id="question_id" name="question_id" required><br>
+
+        <label for="question_text">Question Text:</label>
+        <textarea id="question_text" name="question_text" required></textarea><br>
+
+        <!-- Options -->
+        <label for="option1_text">Option 1 Text:</label>
+        <input type="text" id="option1_text" name="option1_text" required><br>
+        <label for="option1_explanation">Option 1 Explanation:</label>
+        <textarea id="option1_explanation" name="option1_explanation"></textarea><br>
+        <label for="option1_label">Option 1 Label (Correct/Incorrect):</label>
+        <input type="text" id="option1_label" name="option1_label" required><br>
+
+        <label for="option2_text">Option 2 Text:</label>
+        <input type="text" id="option2_text" name="option2_text"><br>
+        <label for="option2_explanation">Option 2 Explanation:</label>
+        <textarea id="option2_explanation" name="option2_explanation"></textarea><br>
+        <label for="option2_label">Option 2 Label (Correct/Incorrect):</label>
+        <input type="text" id="option2_label" name="option2_label"><br>
+
+        <label for="option3_text">Option 3 Text:</label>
+        <input type="text" id="option3_text" name="option3_text"><br>
+        <label for="option3_explanation">Option 3 Explanation:</label>
+        <textarea id="option3_explanation" name="option3_explanation"></textarea><br>
+        <label for="option3_label">Option 3 Label (Correct/Incorrect):</label>
+        <input type="text" id="option3_label" name="option3_label"><br>
+
+        <label for="option4_text">Option 4 Text:</label>
+        <input type="text" id="option4_text" name="option4_text"><br>
+        <label for="option4_explanation">Option 4 Explanation:</label>
+        <textarea id="option4_explanation" name="option4_explanation"></textarea><br>
+        <label for="option4_label">Option 4 Label (Correct/Incorrect):</label>
+        <input type="text" id="option4_label" name="option4_label"><br>
+
+        <!-- Menu options -->
+        <button type="submit" name="action" value="save">Save</button>
+        <button type="submit" name="action" value="cancel">Cancel</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

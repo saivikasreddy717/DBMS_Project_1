@@ -1,0 +1,19 @@
+<!-- templates/modify_textbook.html -->
+<html>
+<head>
+    <title>Modify E-textbook</title>
+</head>
+<body>
+    <h2>Modify E-textbook</h2>
+    <form method="POST">
+        <label for="textbook_id">Unique E-textbook ID:</label>
+        <input type="text" id="textbook_id" name="textbook_id"><br>
+
+        <!-- Menu options -->
+        <button type="submit" name="action" value="add_chapter">Add New Chapter</button>
+        <button type="submit" name="action" value="modify_chapter">Modify Chapter</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

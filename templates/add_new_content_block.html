@@ -1,0 +1,20 @@
+<!-- templates/add_new_content_block.html -->
+<html>
+<head>
+    <title>Add New Content Block</title>
+</head>
+<body>
+    <h2>Add New Content Block</h2>
+    <form method="POST">
+        <label for="contentblock_id">Content Block ID:</label>
+        <input type="text" id="contentblock_id" name="contentblock_id" required><br>
+
+        <!-- Menu options -->
+        <button type="submit" name="action" value="add_text">Add Text</button>
+        <button type="submit" name="action" value="add_picture">Add Picture</button>
+        <button type="submit" name="action" value="add_activity">Add Activity</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

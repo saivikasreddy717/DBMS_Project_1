@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty Landing Page</title>
+</head>
+<body>
+    <h2>Faculty: Landing Page</h2>
+    <ul>
+        <li><a href="{{ url_for('faculty_active_course') }}">1. Go to Active Course</a></li>
+        <li><a href="{{ url_for('faculty_evaluation_course') }}">2. Go to Evaluation Course</a></li>
+        <li><a href="{{ url_for('view_courses') }}">3. View Courses</a></li>
+        <li><a href="{{ url_for('change_password') }}">4. Change Password</a></li>
+        <li><a href="{{ url_for('logout') }}">5. Logout</a></li>
+    </ul>
+</body>
+</html>

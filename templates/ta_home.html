@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA Landing Page</title>
+</head>
+<body>
+    <h2>TA: Landing Page</h2>
+    <ul>
+        <li><a href="{{ url_for('ta_active_course') }}">1. Go to Active Course</a></li>
+        <li><a href="{{ url_for('ta_view_courses') }}">2. View Courses</a></li>
+        <li><a href="{{ url_for('ta_change_password') }}">3. Change Password</a></li>
+        <li><a href="{{ url_for('logout') }}">4. Logout</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: Add Picture</title>
+</head>
+<body>
+    <h2>Add Picture to Content Block</h2>
+
+    <form method="POST">
+        <label for="picture_url">Picture URL:</label><br>
+        <input type="url" id="picture_url" name="picture_url" placeholder="Enter Picture URL" required><br><br>
+
+        <button type="submit" name="action" value="add_picture">Add</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

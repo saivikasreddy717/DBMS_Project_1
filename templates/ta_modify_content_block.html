@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TA: Modify Content Block</title>
+</head>
+<body>
+    <h2>Modify Content Block ID: {{ contentblock_id }}</h2>
+
+    <form method="POST">
+        <label for="contentblock_id">Content Block ID:</label>
+        <input type="text" id="contentblock_id" name="contentblock_id" value="{{ contentblock_id }}" readonly><br><br>
+
+        <button type="submit" name="action" value="add_text">Add Text</button><br><br>
+        <button type="submit" name="action" value="add_picture">Add Picture</button><br><br>
+        <button type="submit" name="action" value="add_activity">Add Activity</button><br><br>
+        <button type="submit" name="action" value="go_back">Go Back</button><br><br>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

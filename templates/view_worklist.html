@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Worklist</title>
+</head>
+<body>
+    <h2>Worklist - Students Awaiting Approval</h2>
+
+    {% if waiting_list %}
+        <table border="1">
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Course ID</th>
+            </tr>
+            {% for student in waiting_list %}
+                <tr>
+                    <td>{{ student[0] }}</td>
+                    <td>{{ student[1] }}</td>
+                    <td>{{ student[2] }}</td>
+                    <td>{{ student[3] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No students in the waiting list.</p>
+    {% endif %}
+
+    <form method="post">
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

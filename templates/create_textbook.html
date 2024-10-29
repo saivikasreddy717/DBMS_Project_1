@@ -1,0 +1,20 @@
+<!-- templates/create_textbook.html -->
+<html>
+<head>
+    <title>Create E-textbook</title>
+</head>
+<body>
+    <h2>Create E-textbook</h2>
+    <form method="POST">
+        <label for="title">Title of E-textbook:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="textbook_id">Unique E-textbook ID:</label>
+        <input type="text" id="textbook_id" name="textbook_id" required><br>
+
+        <!-- Buttons for Add New Chapter and Go Back -->
+        <button type="submit" name="action" value="add_chapter">Add New Chapter</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+    </form>
+</body>
+</html>

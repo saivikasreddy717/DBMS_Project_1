@@ -1,0 +1,23 @@
+<!-- templates/add_new_chapter.html -->
+<html>
+<head>
+    <title>Add New Chapter</title>
+</head>
+<body>
+    <h2>Add New Chapter</h2>
+    <form method="POST">
+        <label for="chapter_id">Unique Chapter ID:</label>
+        <input type="text" id="chapter_id" name="chapter_id" required><br>
+
+        <label for="chapter_num">Chapter Number:</label>
+        <input type="number" id="chapter_num" name="chapter_num" required><br>
+
+        <label for="chapter_title">Chapter Title:</label>
+        <input type="text" id="chapter_title" name="chapter_title" required><br>
+
+        <button type="submit" name="action" value="add_section">Add New Section</button>
+        <button type="submit" name="action" value="go_back">Go Back</button>
+        <button type="submit" name="action" value="landing_page">Landing Page</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Landing Page</title>
+</head>
+<body>
+    <h2>Student Landing Page</h2>
+
+    <div>
+        {% for row in content_structure %}
+            {% if loop.first or content_structure[loop.index0 - 1][0] != row[0] %}
+                <h3>E-book {{ row[1] }}</h3>
+            {% endif %}
+            {% if loop.first or content_structure[loop.index0 - 1][2] != row[2] %}
+                <h4>Chapter {{ row[3] }}</h4>
+            {% endif %}
+            {% if loop.first or content_structure[loop.index0 - 1][4] != row[4] %}
+                <p>Section {{ row[5] }}</p>
+            {% endif %}
+            <p>&emsp;Block {{ row[7] }}</p>
+        {% endfor %}
+    </div>
+
+    <form method="POST">
+        <button type="submit" name="action" value="view_section">View a Section</button><br><br>
+        <button type="submit" name="action" value="view_participation">View Participation Activity Point</button><br><br>
+        <button type="submit" name="action" value="logout">Logout</button>
+    </form>
+</body>
+</html>
