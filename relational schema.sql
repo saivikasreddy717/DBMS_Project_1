@@ -1,5 +1,5 @@
-CREATE DATABASE BLAH;
-USE BLAH;
+CREATE DATABASE blah;
+USE blah;
 
 CREATE TABLE Textbook (
     textbook_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -39,7 +39,7 @@ CREATE TABLE Chapter (
 );
 
 CREATE TABLE Section (
-    section_id INT PRIMARY KEY AUTO_INCREMENT,
+    section_id INT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     section_num VARCHAR(5) NOT NULL,
     chapter_id INT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE Section (
 );
 
 CREATE TABLE ContentBlock (
-    contentblock_id INT PRIMARY KEY AUTO_INCREMENT,
+    contentblock_id INT PRIMARY KEY,
     content_type ENUM('text', 'image') NOT NULL,
     content TEXT NOT NULL,
     section_id INT NOT NULL,
@@ -66,6 +66,12 @@ CREATE TABLE Activity (
     explanation TEXT NOT NULL,
     contentblock_id INT NOT NULL,
     FOREIGN KEY (contentblock_id) REFERENCES ContentBlock(contentblock_id)
+);
+
+CREATE TABLE Faculty(
+faculty_id VARCHAR(8) PRIMARY KEY,
+course_id INT,
+FOREIGN KEY (course_id) REFERENCES Course(course_id)
 );
 
 
@@ -109,5 +115,8 @@ CREATE TABLE StudentActivity (
 -- Insert admin user
 INSERT INTO User (user_id, first_name, last_name, email, password, role)
 VALUES ('1', 'blah', 'blah2', 'blah@example.com', 'blah', 'admin');
+
+USE blah;
+SELECT* FROM Section;
 
 

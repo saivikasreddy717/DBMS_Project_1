@@ -1,11 +1,12 @@
 import mysql.connector
+from datetime import datetime
 
 # Database connection function
 def get_db_connection():
     return mysql.connector.connect(
         host="127.0.0.1",
         user="root",  # Replace with your username
-        password="blah",  # Replace with your password
+        password="Raja@1101",  # Replace with your password
         database="blah"  # Replace with your database name
     )
 
@@ -60,7 +61,7 @@ def login(user_type):
                 if user_type == 'admin':
                     admin_home()
                 elif user_type == 'faculty':
-                    faculty_home()
+                    faculty_login()
                 elif user_type == 'ta':
                     ta_home()
                 elif user_type == 'student':
@@ -120,6 +121,12 @@ def create_faculty_account():
         last_name = input("Enter Last Name: ")
         email = input("Enter Email: ")
         password = input("Enter Password: ")
+        user_id_prefix = first_name[:2] + last_name[:2]
+        current_date = datetime.now()
+        user_id_date = current_date.strftime("%y%m")
+        user_id = user_id_prefix + user_id_date
+        print(user_id)
+        
 
         print("\n1. Add User")
         print("2. Go Back")
@@ -127,6 +134,7 @@ def create_faculty_account():
 
         if choice == '1':
             # Attempt to add user to the database
+            
             conn = get_db_connection()
             cursor = conn.cursor()
 
@@ -140,9 +148,9 @@ def create_faculty_account():
                 else:
                     # Insert new faculty into the database
                     cursor.execute("""
-                        INSERT INTO User (first_name, last_name, email, password, role)
-                        VALUES (%s, %s, %s, %s, 'faculty')
-                    """, (first_name, last_name, email, password))
+                        INSERT INTO User (user_id, first_name, last_name, email, password, role)
+                        VALUES (%s, %s, %s, %s, %s, 'faculty')
+                    """, (user_id, first_name, last_name, email, password))
                     conn.commit()
                     print("Faculty account created successfully!")
             except mysql.connector.Error as err:
@@ -272,8 +280,10 @@ def add_new_section(chapter_id):
             cursor.close()
             conn.close()
 
+        section_id = input("Enter Unique Section ID:")
         section_num = input("Enter Section Number: ")
         section_title = input("Enter Section Title: ")
+        
 
         print("\n1. Add New Content Block")
         print("2. Go Back")
@@ -282,8 +292,25 @@ def add_new_section(chapter_id):
 
         if choice == '1':
             # Redirect to add a new content block
-            add_new_content_block(section_num)
-            return  # Return to previous menu after adding content block
+            # Proceed to add a new section for the chapter
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            
+            try:
+                # Insert the new chapter into the database
+                cursor.execute("""
+                    INSERT INTO Section (section_id, title, chapter_id, section_num)
+                    VALUES (%s, %s, %s, %s)
+                """, (section_id, section_title, chapter_id, section_num))
+                conn.commit()
+                print("Chapter added successfully!")
+                add_new_content_block(section_id)
+                return  # Return to previous menu after adding content block
+            except mysql.connector.Error as err:
+                print(f"An error occurred: {err}")
+            finally:
+                cursor.close()
+                conn.close()
 
         elif choice == '2':
             # Go back to the previous page without saving
@@ -303,44 +330,46 @@ def add_new_content_block(section_id):
     while True:
         print(f"\n===== Add New Content Block for Section (ID: {section_id}) =====")
 
+        content_block_id =  input("Enter Unique Content Block ID:")
+
         # Automatically create a new content block
         conn = get_db_connection()
         cursor = conn.cursor()
 
         try:
-            cursor.execute("INSERT INTO ContentBlock (section_id) VALUES (%s)", (section_id,))
+            cursor.execute("INSERT INTO ContentBlock (contentblock_id, section_id) VALUES (%s, %s)", (content_block_id, section_id,))
             conn.commit()
-            content_block_id = cursor.lastrowid  # Get the last inserted ID
             print(f"New Content Block created with ID {content_block_id}.")
+            # Menu for content block actions
+            print("\n1. Add Text")
+            print("2. Add Picture")
+            print("3. Add Activity")
+            print("4. Go Back")
+            print("5. Landing Page")
+            
+            choice = input("Enter choice (1-5): ")
+            
+            if choice == '1':
+                add_text(content_block_id)
+            elif choice == '2':
+                add_picture(content_block_id)
+            elif choice == '3':
+                add_activity(content_block_id)
+            elif choice == '4':
+                print("Discarding input. Returning to the previous page...")
+                return  # Go back to the previous page
+            elif choice == '5':
+                print("Discarding input. Returning to the User Landing Page...")
+                return  # Go back to the User Landing Page
+            else:
+                print("Invalid choice. Please enter a number between 1 and 5.")
         except mysql.connector.Error as err:
             print(f"An error occurred: {err}")
             cursor.close()
             conn.close()
             return
 
-        # Menu for content block actions
-        print("\n1. Add Text")
-        print("2. Add Picture")
-        print("3. Add Activity")
-        print("4. Go Back")
-        print("5. Landing Page")
-
-        choice = input("Enter choice (1-5): ")
-
-        if choice == '1':
-            add_text(content_block_id)
-        elif choice == '2':
-            add_picture(content_block_id)
-        elif choice == '3':
-            add_activity(content_block_id)
-        elif choice == '4':
-            print("Discarding input. Returning to the previous page...")
-            return  # Go back to the previous page
-        elif choice == '5':
-            print("Discarding input. Returning to the User Landing Page...")
-            return  # Go back to the User Landing Page
-        else:
-            print("Invalid choice. Please enter a number between 1 and 5.")
+        
         
         cursor.close()
         conn.close()
@@ -659,7 +688,7 @@ def modify_chapter(textbook_id):
 
         elif choice == '2':
             # Redirect to modify an existing section
-            modify_section(chapter_id)
+            modify_section(chapter_id,textbook_id)
             return  # Return after handling section modification
 
         elif choice == '3':
@@ -676,12 +705,11 @@ def modify_chapter(textbook_id):
             print("Invalid choice. Please select 1, 2, 3, or 4.")
 
 
-def modify_section():
+def modify_section(chapter_id,textbook_id):
     while True:
         print("\n===== Modify Section =====")
-        e_textbook_id = input("Enter Unique E-textbook ID: ")
-        chapter_id = input("Enter Chapter ID: ")
-        section_num = input("Enter Section Number: ")
+
+        section_id = input("Enter Section ID: ")
 
         # Validate the E-textbook ID, Chapter ID, and Section Number
         conn = get_db_connection()
@@ -691,8 +719,8 @@ def modify_section():
             # Check if the E-textbook, chapter, and section exist in the database
             cursor.execute("""
                 SELECT * FROM Section
-                WHERE section_num = %s AND chapter_id = %s AND chapter_id IN (SELECT chapter_id FROM Chapter WHERE textbook_id = %s)
-            """, (section_num, chapter_id, e_textbook_id))
+                WHERE section_id = %s AND chapter_id = %s AND chapter_id IN (SELECT chapter_id FROM Chapter WHERE textbook_id = %s)
+            """, (section_id, chapter_id, textbook_id))
 
             section = cursor.fetchone()
 
@@ -710,11 +738,11 @@ def modify_section():
                 choice = input("Enter choice (1-4): ")
 
                 if choice == '1':
-                    add_new_content_block(section_num)
+                    add_new_content_block(section_id)
                     return  # Go back after adding the content block
 
                 elif choice == '2':
-                    modify_content_block(section_num)
+                    modify_content_block(section_id)
                     return  # Go back after modifying the content block
 
                 elif choice == '3':
@@ -814,7 +842,7 @@ def create_new_active_course():
 
             try:
                 # Check if the Course ID already exists
-                cursor.execute("SELECT * FROM ActiveCourse WHERE course_id = %s", (course_id,))
+                cursor.execute("SELECT * FROM Course WHERE course_id = %s", (course_id,))
                 existing_course = cursor.fetchone()
 
                 if existing_course:
@@ -839,9 +867,14 @@ def create_new_active_course():
 
                 # Insert the new active course into the database
                 cursor.execute("""
-                    INSERT INTO ActiveCourse (course_id, course_name, e_textbook_id, faculty_id, start_date, end_date, token, capacity)
+                    INSERT INTO Course (course_id, course_title, faculty_id, start_date, end_date, token, capacity, course_type, e_textbook_id)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """, (course_id, course_name, e_textbook_id, faculty_id, start_date, end_date, token, capacity))
+                """, (course_id, course_name, faculty_id, start_date, end_date, token, capacity, 'active', e_textbook_id))
+                conn.commit()
+                cursor.execute("""
+                    INSERT INTO Faculty (faculty_id, course_id)
+                    VALUES (%s, %s)
+                """, (faculty_id, course_id))
                 conn.commit()
 
                 print("New Active Course created successfully!")
@@ -874,6 +907,8 @@ def create_new_eval_course():
         faculty_id = input("Enter Faculty Member ID: ")
         start_date = input("Enter Course Start Date (YYYY-MM-DD): ")
         end_date = input("Enter Course End Date (YYYY-MM-DD): ")
+        token = input("Enter Unique Token: ")
+        capacity = input("Enter Course Capacity: ")
 
         print("\n1. Save")
         print("2. Cancel")
@@ -887,7 +922,7 @@ def create_new_eval_course():
 
             try:
                 # Check if the Course ID already exists
-                cursor.execute("SELECT * FROM EvalCourse WHERE course_id = %s", (course_id,))
+                cursor.execute("SELECT * FROM Course WHERE course_id = %s", (course_id,))
                 existing_course = cursor.fetchone()
 
                 if existing_course:
@@ -912,9 +947,9 @@ def create_new_eval_course():
 
                 # Insert the new evaluation course into the database
                 cursor.execute("""
-                    INSERT INTO EvalCourse (course_id, course_name, e_textbook_id, faculty_id, start_date, end_date)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                """, (course_id, course_name, e_textbook_id, faculty_id, start_date, end_date))
+                    INSERT INTO Course (course_id, course_title, faculty_id, start_date, end_date, token, capacity, course_type, e_textbook_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                """, (course_id, course_name, faculty_id, start_date, end_date,token, capacity,'evaluation', e_textbook_id))
                 conn.commit()
 
                 print("New Evaluation Course created successfully!")
@@ -965,7 +1000,7 @@ def faculty_login():
 
                 if user:
                     print("Login successful. Welcome Faculty!")
-                    faculty_home()  # Redirect to faculty home page
+                    faculty_landing(user_id)  # Redirect to faculty home page
                     break  # Exit the loop after successful login
                 else:
                     print("Login Incorrect. Please try again.")
@@ -984,12 +1019,11 @@ def faculty_login():
 
         else:
             print("Invalid choice. Please enter 1 or 2.")
+    
 
-def faculty_home():
-    print("Faculty Home: Welcome!")
-
-def faculty_landing():
+def faculty_landing(faculty_id):
     while True:
+        print("Faculty Home: Welcome!")
         print("\n===== Faculty Landing Menu =====")
         print("1. Go to Active Course")
         print("2. Go to Evaluation Course")
@@ -1001,13 +1035,13 @@ def faculty_landing():
         choice = input("Enter choice (1-5): ")
 
         if choice == '1':
-            go_to_active_course()
+            go_to_active_course(faculty_id)
         elif choice == '2':
-            go_to_evaluation_course()
+            go_to_evaluation_course(faculty_id)
         elif choice == '3':
-            view_courses()
+            view_courses(faculty_id)
         elif choice == '4':
-            change_password()
+            change_password(faculty_id)
         elif choice == '5':
             print("Logging out... Returning to the Home page.")
             start_menu()  # Redirect to the Home page or exit the loop
@@ -1016,14 +1050,14 @@ def faculty_landing():
             print("Invalid choice. Please enter a number between 1 and 5.")
 
 
-def go_to_active_course():
+def go_to_active_course(faculty_id):
     while True:
         course_id = input("Enter the Active Course ID: ")
 
         # Validate if the course ID exists in the database
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM ActiveCourse WHERE course_id = %s", (course_id,))
+        cursor.execute("SELECT * FROM Course WHERE course_type = 'active' AND faculty_id = faculty_id AND course_id = %s", (int(course_id),))
         active_course = cursor.fetchone()
 
         if not active_course:
@@ -1079,7 +1113,7 @@ def view_worklist(faculty_id):
         # Example query to fetch the list of students on the worklist for the faculty's courses
         # You may need to adjust the query based on your actual database structure.
         cursor.execute("""
-            SELECT s.student_id, s.first_name, s.last_name, c.course_name
+            SELECT s.student_id, s.first_name, s.last_name, c.course_title
             FROM Student s
             JOIN Enrollment e ON s.student_id = e.student_id
             JOIN Course c ON e.course_id = c.course_id
@@ -1125,7 +1159,7 @@ def approve_enrollment(faculty_id):
 
         # Check if the student is in the waiting list for a course under the faculty's supervision
         cursor.execute("""
-            SELECT e.enrollment_id, c.course_name
+            SELECT e.enrollment_id, c.course_title
             FROM Enrollment e
             JOIN Course c ON e.course_id = c.course_id
             WHERE e.student_id = %s AND c.faculty_id = %s AND e.status = 'waiting'
@@ -1186,7 +1220,7 @@ def view_students(faculty_id):
 
         # Fetch the courses supervised by the faculty
         cursor.execute("""
-            SELECT c.course_id, c.course_name
+            SELECT c.course_id, c.course_title
             FROM Course c
             WHERE c.faculty_id = %s
         """, (faculty_id,))
@@ -2116,14 +2150,14 @@ def add_question_faculty(activity_id):
 
 
 
-def go_to_evaluation_course():
+def go_to_evaluation_course(faculty_id):
     while True:
         course_id = input("Enter the Evaluation Course ID: ")
 
         # Validate if the course ID exists in the database
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM EvalCourse WHERE course_id = %s", (course_id,))
+        cursor.execute("SELECT * FROM Course WHERE course_type = 'evaluation' AND faculty_id = faculty_id AND course_id = %s", (course_id,))
         evaluation_course = cursor.fetchone()
 
         if not evaluation_course:
@@ -2161,14 +2195,14 @@ def go_to_evaluation_course():
 
 def view_courses(faculty_id):
     while True:
-        print(f"\n===== Assigned Courses for Faculty (ID: {faculty_id}) =====")
+        print(f"\n===== Assigned Courses for Faculty ID: {faculty_id} =====")
 
         # Connect to the database and retrieve courses assigned to the faculty member
         conn = get_db_connection()
         cursor = conn.cursor()
 
         # Query to get the courses assigned to the faculty
-        cursor.execute("SELECT course_id, course_name FROM ActiveCourse WHERE faculty_id = %s", (faculty_id,))
+        cursor.execute("SELECT course_id, course_title FROM Course WHERE faculty_id = %s", (faculty_id,))
         assigned_courses = cursor.fetchall()
 
         if not assigned_courses:
@@ -2184,7 +2218,7 @@ def view_courses(faculty_id):
 
         if choice == '1':
             print("Returning to Faculty Landing Page...")
-            faculty_landing()  # Redirect back to Faculty Landing Page
+            faculty_landing(faculty_id)  # Redirect back to Faculty Landing Page
             break
         else:
             print("Invalid choice. Please select 1 to go back.")
@@ -2343,13 +2377,13 @@ def ta_view_courses(ta_id):
 
     try:
         # Retrieve assigned courses from the database for the specified TA
-        cursor.execute("SELECT course_id, course_name FROM Courses WHERE ta_id = %s", (ta_id,))
+        cursor.execute("SELECT course_id, course_title FROM Courses WHERE ta_id = %s", (ta_id,))
         courses = cursor.fetchall()
 
         if courses:
             print("\nAssigned Courses:")
-            for course_id, course_name in courses:
-                print(f"Course ID: {course_id}, Course Name: {course_name}")
+            for course_id, course_title in courses:
+                print(f"Course ID: {course_id}, Course Name: {course_title}")
         else:
             print("No courses assigned.")
         
