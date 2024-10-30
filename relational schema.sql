@@ -16,7 +16,7 @@ CREATE TABLE User (
 );
 
 CREATE TABLE Course (
-    course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT PRIMARY KEY,
     course_title VARCHAR(255) NOT NULL,
     faculty_id VARCHAR(8) NOT NULL, -- Updated to match User.user_id type
     start_dt DATE NOT NULL,
@@ -117,6 +117,6 @@ INSERT INTO User (user_id, first_name, last_name, email, password, role)
 VALUES ('1', 'blah', 'blah2', 'blah@example.com', 'blah', 'admin');
 
 USE blah;
-SELECT* FROM Section;
+SELECT* FROM Faculty;
 
 

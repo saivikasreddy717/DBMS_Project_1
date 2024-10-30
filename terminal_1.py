@@ -822,21 +822,27 @@ def create_new_active_course():
     while True:
         print("\n===== Create New Active Course =====")
         course_id = input("Enter Unique Course ID: ")
-        course_name = input("Enter Course Name: ")
-        e_textbook_id = input("Enter Unique ID of the E-textbook: ")
+        course_title = input("Enter Course Name: ")
+        textbook_id = input("Enter Unique ID of the E-textbook: ")
         faculty_id = input("Enter Faculty Member ID: ")
-        start_date = input("Enter Course Start Date (YYYY-MM-DD): ")
-        end_date = input("Enter Course End Date (YYYY-MM-DD): ")
-        token = input("Enter Unique Token: ")
+        start_dt = input("Enter Course Start Date (YYYY-MM-DD): ")
+        end_dt = input("Enter Course End Date (YYYY-MM-DD): ")
+        course_token = input("Enter Unique Token: ")
         capacity = input("Enter Course Capacity: ")
 
         print("\n1. Save")
         print("2. Cancel")
         print("3. Landing Page")
+        params = (course_id, course_title, faculty_id, start_dt, end_dt, course_token, capacity, 'active', textbook_id)
+
+                # Print the parameters for debugging
+        print("Inserting into Course with parameters:", params)
         choice = input("Enter choice (1-3): ")
+
 
         if choice == '1':
             # Validate the inputs (checking for valid IDs in the database)
+            
             conn = get_db_connection()
             cursor = conn.cursor()
 
@@ -850,7 +856,7 @@ def create_new_active_course():
                     continue  # Go back to the input prompt
 
                 # Check if the E-textbook ID exists
-                cursor.execute("SELECT * FROM Textbook WHERE textbook_id = %s", (e_textbook_id,))
+                cursor.execute("SELECT * FROM Textbook WHERE textbook_id = %s", (textbook_id,))
                 textbook = cursor.fetchone()
 
                 if not textbook:
@@ -865,24 +871,39 @@ def create_new_active_course():
                     print("The provided Faculty Member ID does not exist or is not assigned to a faculty. Please enter a valid Faculty ID.")
                     continue  # Go back to the input prompt
 
+                # Correctly parse the dates
+                start_dt = datetime.strptime(start_dt, "%Y-%m-%d").date()
+                end_dt = datetime.strptime(end_dt, "%Y-%m-%d").date()
+
+                
+
                 # Insert the new active course into the database
                 cursor.execute("""
-                    INSERT INTO Course (course_id, course_title, faculty_id, start_date, end_date, token, capacity, course_type, e_textbook_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """, (course_id, course_name, faculty_id, start_date, end_date, token, capacity, 'active', e_textbook_id))
+                    INSERT INTO Course (course_id, course_title, faculty_id, start_dt, end_dt, course_token, capacity, course_type, textbook_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """, (course_id, course_title, faculty_id, start_dt, end_dt, course_token, capacity, 'active', textbook_id))
+
+                # Commit the changes to the database
                 conn.commit()
+
+                # Insert into the Faculty table
                 cursor.execute("""
                     INSERT INTO Faculty (faculty_id, course_id)
                     VALUES (%s, %s)
                 """, (faculty_id, course_id))
+
+                # Commit the changes for the Faculty table
                 conn.commit()
 
                 print("New Active Course created successfully!")
+
             except mysql.connector.Error as err:
                 print(f"An error occurred: {err}")
+
             finally:
                 cursor.close()
                 conn.close()
+
             return  # Return to the Admin Landing Page after saving the course
 
         elif choice == '2':
@@ -896,19 +917,18 @@ def create_new_active_course():
         else:
             print("Invalid choice. Please select 1, 2, or 3.")
 
-
-
 def create_new_eval_course():
     while True:
         print("\n===== Create New Evaluation Course =====")
         course_id = input("Enter Unique Course ID: ")
-        course_name = input("Enter Course Name: ")
-        e_textbook_id = input("Enter Unique ID of the E-textbook: ")
+        course_title = input("Enter Course Name: ")
+        textbook_id = input("Enter Unique ID of the E-textbook: ")
         faculty_id = input("Enter Faculty Member ID: ")
-        start_date = input("Enter Course Start Date (YYYY-MM-DD): ")
-        end_date = input("Enter Course End Date (YYYY-MM-DD): ")
+        start_dt = input("Enter Course Start Date (YYYY-MM-DD): ")
+        end_dt = input("Enter Course End Date (YYYY-MM-DD): ")
         token = input("Enter Unique Token: ")
         capacity = input("Enter Course Capacity: ")
+        
 
         print("\n1. Save")
         print("2. Cancel")
@@ -930,7 +950,7 @@ def create_new_eval_course():
                     continue  # Go back to the input prompt
 
                 # Check if the E-textbook ID exists
-                cursor.execute("SELECT * FROM Textbook WHERE textbook_id = %s", (e_textbook_id,))
+                cursor.execute("SELECT * FROM Textbook WHERE textbook_id = %s", (textbook_id,))
                 textbook = cursor.fetchone()
 
                 if not textbook:
@@ -947,9 +967,9 @@ def create_new_eval_course():
 
                 # Insert the new evaluation course into the database
                 cursor.execute("""
-                    INSERT INTO Course (course_id, course_title, faculty_id, start_date, end_date, token, capacity, course_type, e_textbook_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                """, (course_id, course_name, faculty_id, start_date, end_date,token, capacity,'evaluation', e_textbook_id))
+                    INSERT INTO Course (course_id, course_title, faculty_id, start_dt, end_dt, course_token, capacity, course_type, textbook_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, 'evaluation', %s)
+                """, (course_id, course_title, faculty_id, start_dt, end_dt, token, capacity, textbook_id))
                 conn.commit()
 
                 print("New Evaluation Course created successfully!")
