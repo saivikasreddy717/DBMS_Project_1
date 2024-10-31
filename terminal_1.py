@@ -6,7 +6,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="127.0.0.1",
         user="root",  # Replace with your username
-        password="blah",  # Replace with your password
+        password="Raja@1101",  # Replace with your password
         database="blah"  # Replace with your database name
     )
 
@@ -63,7 +63,7 @@ def login(user_type):
                 elif user_type == 'faculty':
                     faculty_login()
                 elif user_type == 'ta':
-                    ta_home()
+                    ta_login()
                 elif user_type == 'student':
                     student_home()
                 break  # Exit the loop after successful login
@@ -1072,7 +1072,7 @@ def go_to_active_course(faculty_id):
                 add_ta(course_id)
             elif choice == '7':
                 print("Returning to Faculty Landing Page...")
-                faculty_landing()  # Redirect back to Faculty Landing Page
+                faculty_landing(faculty_id)  # Redirect back to Faculty Landing Page
                 break
             else:
                 print("Invalid choice. Please enter a number between 1 and 7.")
@@ -1261,6 +1261,8 @@ def view_students(faculty_id):
         else:
             print("Invalid choice. Please enter 1.")
 
+from datetime import datetime
+
 def add_ta(faculty_id):
     while True:
         print("\n===== Add Teaching Assistant (TA) =====")
@@ -1270,6 +1272,13 @@ def add_ta(faculty_id):
         last_name = input("Enter TA's Last Name: ")
         email = input("Enter TA's Email: ")
         default_password = input("Enter a Default Password: ")
+        
+        # Generate a unique user_id based on TA's name and current date
+        user_id_prefix = first_name[:2].upper() + last_name[:2].upper()  # Use uppercase for consistency
+        current_date = datetime.now()
+        user_id_date = current_date.strftime("%y%m")  # YYMM format
+        user_id = user_id_prefix + user_id_date  # Full user_id generation
+        print(user_id)
         
         print("\n1. Save")
         print("2. Cancel")
@@ -1291,9 +1300,9 @@ def add_ta(faculty_id):
                 else:
                     # Insert new TA into the database
                     cursor.execute("""
-                        INSERT INTO User (first_name, last_name, email, password, role)
-                        VALUES (%s, %s, %s, %s, 'ta')
-                    """, (first_name, last_name, email, default_password))
+                        INSERT INTO User (user_id, first_name, last_name, email, password, role)
+                        VALUES (%s, %s, %s, %s, %s, 'ta')
+                    """, (user_id, first_name, last_name, email, default_password))
                     conn.commit()
                     print("Teaching Assistant added successfully!")
             
@@ -2354,7 +2363,7 @@ def ta_view_courses(ta_id):
 
     try:
         # Retrieve assigned courses from the database for the specified TA
-        cursor.execute("SELECT course_id, course_title FROM Courses WHERE ta_id = %s", (ta_id,))
+        cursor.execute("SELECT course_id, course_title FROM Course WHERE ta_id = %s", (ta_id,))
         courses = cursor.fetchall()
 
         if courses:
@@ -2430,7 +2439,7 @@ def ta_view_students(ta_id):
 
     try:
         # Fetching courses the TA is linked to
-        cursor.execute("SELECT course_id FROM Courses WHERE ta_id=%s", (ta_id,))
+        cursor.execute("SELECT course_id FROM Course WHERE ta_id=%s", (ta_id,))
         courses = cursor.fetchall()
         if not courses:
             print("You are not assigned to any courses.")
@@ -2442,7 +2451,7 @@ def ta_view_students(ta_id):
             print(f"\nStudents in Course ID {course_id}:")
             cursor.execute("""
                 SELECT student_id, name
-                FROM Students
+                FROM StudentActivity
                 WHERE course_id=%s
             """, (course_id,))
             students = cursor.fetchall()
@@ -3303,9 +3312,11 @@ def view_participation_activity_point(student_id):
 
 
 
-def ta_home():
+def ta_home(ta_id):
     print("Teaching Assistant Home")
     # TA-specific functions go here
+    ta_landing_page(ta_id)
+
 
 def student_home():
     print("Student Home")
