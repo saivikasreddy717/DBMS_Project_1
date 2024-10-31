@@ -69,9 +69,10 @@ CREATE TABLE Activity (
 );
 
 CREATE TABLE Faculty(
-faculty_id VARCHAR(8) PRIMARY KEY,
+faculty_id VARCHAR(8),
 course_id INT,
-FOREIGN KEY (course_id) REFERENCES Course(course_id)
+FOREIGN KEY (course_id) REFERENCES Course(course_id),
+PRIMARY KEY (course_id,faculty_id)
 );
 
 
@@ -117,6 +118,6 @@ INSERT INTO User (user_id, first_name, last_name, email, password, role)
 VALUES ('1', 'blah', 'blah2', 'blah@example.com', 'blah', 'admin');
 
 USE blah;
-SELECT* FROM Faculty;
+DROP TABLE Faculty;
 
 
